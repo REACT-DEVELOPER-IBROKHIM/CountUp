@@ -3,8 +3,9 @@ import { api } from './index'
 export const sellersApi = api.injectEndpoints({
   endpoints: (build) => ({
     getSellers: build.query({
-      query: () => ({
-        url: "/get/sellers?limit=30&skip=0"
+      query: (params) => ({
+        url: "/get/sellers",
+        params
       }),
       providesTags: ["Sellers"]
     }),
