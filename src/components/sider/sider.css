@@ -1,0 +1,37 @@
+[data-collapsed]{
+    transition: all 0.3s ease-in-out;
+}
+
+[data-collapsed="true"]{
+    width: 100px;
+}
+
+[data-collapsed="false"]{
+    width: 250px;
+}
+
+[data-collapsed="false"] nav > a > span{
+    opacity: 1;
+}
+
+[data-collapsed] nav a.active{
+    background-color: #222;
+    color: #fff;
+}
+
+[data-collapsed] nav > a > span{
+    transition: opacity 0.1s ease-in-out;
+}
+
+[data-collapsed="true"] nav > a > span{
+    opacity: 0;
+}
+
+[data-collapsed="false"] nav > a svg{
+    transition: 0.3s ease-in-out;
+    margin-left: 0;
+}
+
+[data-collapsed="true"] nav > a svg{
+    margin-left: 16px;
+}
