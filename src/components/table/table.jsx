@@ -11,75 +11,125 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, Pin, PinOff } from "lucide-react";
+import { EllipsisVertical, PhoneOutgoing, Pin, PinOff } from "lucide-react";
 import { Loading } from "@/utils";
 import { Fragment } from "react";
-import {usePinCustomerMutation} from "@/redux/api/customers-api"
+import { useLocation } from "react-router-dom";
+import { usePinCustomerMutation } from "@/redux/api/customers-api";
+import { usePinSellersMutation } from "@/redux/api/seller-api";
 
-function TableComponent({ data, tableHeaders, isLoading }) {
-  const [pinUser, {isLoading: pinLoading, error}] = usePinCustomerMutation();
+function TableComponent({ data, tableHeaders, isLoading, caption }) {
+  let { pathname } = useLocation();
+  pathname = pathname.split("/")[2];
+  const [pinCutomer, { isLoading: pinCustomerLoading }] =
+    usePinCustomerMutation();
+  const [pinSeller, { isLoading: pinSellerLoading }] = usePinSellersMutation();
 
+  console.log(pathname);
   const handlePinCustomer = (customer) => {
-    pinUser({body: customer, _id: customer._id})
-  }
+    if (pathname === "sellers") {
+      pinSeller({ body: customer, _id: customer._id });
+    } else {
+      pinCutomer({ body: customer, _id: customer._id });
+    }
+  };
   return (
     <Table className="w-full shadow">
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>{caption}</TableCaption>
       <TableHeader>
         <TableRow>{tableHeaders}</TableRow>
       </TableHeader>
       <TableBody className="relative">
-        {
-        data?.innerData.map((customer, index) => (
-          <Fragment key={customer._id}>
-            <TableRow >
-            <TableCell className="font-medium ">{index + 1}</TableCell>
-            <TableCell>
-              <p>{customer.fname + " " + customer.lname}</p>
-              <p className="text-sm text-slate-500">{customer.address}</p>
-            </TableCell>
-            <TableCell>{customer.phone_primary}</TableCell>
-            <TableCell>{customer?.budget.fprice()}</TableCell>
-            <TableCell className="text-right flex items-center justify-end gap-2">
-            <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full" onClick={() =>handlePinCustomer(customer)}>
-               {customer.pin ? <PinOff size={18} className="rotate-[30deg]" /> : <Pin  size={18} className="rotate-[30deg]" /> 
-                }
+        {isLoading ? (
+          <TableRow>
+            <TableCell colSpan={5}>
+              <div className="h-[500px]">
+                <Loading />
               </div>
-              <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <EllipsisVertical />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem className="text-md cursor-pointer">Tahrirlash</DropdownMenuItem>
-                    <DropdownMenuItem className="text-md cursor-pointer">Arxivlash</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <Button>To'lov</Button>
             </TableCell>
           </TableRow>
-          
-          </Fragment>
-           
-        ))}
+        ) : (
+          data?.innerData.map((user, index) => (
+            <Fragment key={user._id}>
+              <TableRow>
+                <TableCell className="font-medium ">{index + 1}</TableCell>
+                <TableCell>
+                  <p>{user.fname + " " + user.lname}</p>
+                  <p className="text-sm text-slate-500">{user.address}</p>
+                </TableCell>
+                <TableCell>
+                  <a href={`tel:${user.phone_primary}`} className="flex items-center gap-2">
+                  <span className="p-2 cursor-pointer active:bg-slate-100 rounded-full inline-block">
+                      <PhoneOutgoing size={18} className="text-green-700" />
+                    </span>
+                    {user.phone_primary}{" "}
+                  </a>
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={
+                      "font-bold " +
+                      (user.budget > 0
+                        ? "text-green-700"
+                        : user.budget === 0
+                        ? "text-slate-500"
+                        : "text-red-500")
+                    }
+                  >
+                    {user?.budget.fprice()} so'm
+                  </span>
+                </TableCell>
+                <TableCell className="text-right flex items-center justify-end gap-2">
+                  <div
+                    className="p-2 cursor-pointer active:bg-slate-100 rounded-full"
+                    onClick={() => handlePinCustomer(user)}
+                  >
+                    {user.pin ? (
+                      <PinOff size={18} className="rotate-[30deg]" />
+                    ) : (
+                      <Pin size={18} className="rotate-[30deg]" />
+                    )}
+                  </div>
+                  <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <EllipsisVertical />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="text-md cursor-pointer">
+                          Tahrirlash
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-md cursor-pointer">
+                          Arxivlash
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <Button>To'lov</Button>
+                </TableCell>
+              </TableRow>
+            </Fragment>
+          ))
+        )}
         <>
-            {
-            true || pinLoading ? <div className="h-full w-full bg-[#ffffffa2] backdrop-blur-[3px] absolute top-0 left-0">
-           <div className="w-full min-h-[500px] flex items-center justify-center fixed bg-red-400">
-            <Loading/>
-           </div>
-           </div>
-           : null
-          }
-          </>
+          {pinCustomerLoading || pinSellerLoading ? (
+            <div className="h-full w-full bg-[#ffffffa2] backdrop-blur-[3px] absolute top-0 left-0">
+              <div className="w-full min-h-[500px] flex items-center justify-center ">
+                <Loading />
+              </div>
+            </div>
+          ) : null}
+        </>
       </TableBody>
       <TableFooter>
         <TableRow>
