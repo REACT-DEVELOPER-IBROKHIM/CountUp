@@ -7,12 +7,12 @@ import { useGetCustomersQuery } from "@/redux/api/customers-api"
 const Customers = () => {
   const {data, isLoading} = useGetCustomersQuery();
   console.log(data)
-  const tableHeaders = ["No", "Name", "Phone", "Budget", "Actions"].map((header, index) => <TableHead className={header === "Actions" ? "text-right" : ""} key={index}>{header}</TableHead>);
+  const tableHeaders = ["№", "FIO", "Telfon", "Budjet", "Boshqaruv"].map((header, index, arr) => <TableHead className={arr.length - 1 === index ? "text-right" : ""} key={index}>{header}</TableHead>);
   return (
     <div>
       <ContentTitle>Customers</ContentTitle>
       <div>
-        <Table data={data} isLoading={isLoading} tableHeaders={tableHeaders}/>
+        <Table data={data} isLoading={isLoading} tableHeaders={tableHeaders} caption="Mijozlarning ma'lumoti"/>
       </div>
     </div>
   )

@@ -26,13 +26,14 @@ const formSchema = z.object({
       "Parol ko'pi bilangi 32 ta belgidan iborat." 
   }),
 })
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loginUser } from "@/redux/slices/auth-slice";
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const auth = useSelector(state => state.auth);
   const navigate = useNavigate();
   const { toast } = useToast()
   const dispatch = useDispatch();
@@ -58,6 +59,12 @@ const Login = () => {
       navigate("/dashboard");
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    if(auth.token){
+      navigate("/dashboard")
+    }
+  }, [])
 
   return (
    <div className="w-full h-screen grid place-items-center">
