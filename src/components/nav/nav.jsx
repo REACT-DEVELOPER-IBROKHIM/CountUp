@@ -1,28 +1,17 @@
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger
+    NavigationMenu
   } from "@/components/ui/navigation-menu";
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button";
 import {PanelRightOpen, PanelLeftOpen} from "lucide-react"
+import { Input } from "@/components/ui/input";
 
-const Nav = ({collapsed, setCollapsed}) => {
+const Nav = ({collapsed, handleCollapsed}) => {
   return (
     <NavigationMenu className="p-[20px] flex-none justify-start max-w-full border-b-[1px] bg-white border-gray-200 shadow sticky top-0">
-        <Button variant="ghost" onClick = {() => setCollapsed(!collapsed)}>
+        <Button variant="ghost" onClick = {() => handleCollapsed()}>
           {collapsed ? <PanelLeftOpen/> : <PanelRightOpen/>}
         </Button>
-        <NavigationMenuList className="flex-1">
-            <NavigationMenuItem>
-            <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-            <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-            </NavigationMenuContent>
-            </NavigationMenuItem>
-        </NavigationMenuList>
+        <Input placeholder="Qidirish" className="w-full max-w-[550px]" />
     </NavigationMenu>
   )
 }

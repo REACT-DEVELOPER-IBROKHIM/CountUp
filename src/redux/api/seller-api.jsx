@@ -27,8 +27,16 @@ export const sellersApi = api.injectEndpoints({
         }
       }),
       invalidatesTags: ["Sellers"]
+    }),
+    expenseForSellers: build.mutation({
+      query: ({body}) => ({
+        url: `/create/expense`,
+        method: "POST",
+        body
+      }),
+      invalidatesTags: ["Sellers"]
     })
   })
 })
 
-export const { useGetSellersQuery, useUpdateSellersMutation, usePinSellersMutation } = sellersApi
+export const { useGetSellersQuery, useUpdateSellersMutation, usePinSellersMutation, useExpenseForSellersMutation } = sellersApi

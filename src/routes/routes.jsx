@@ -50,18 +50,18 @@ const RouteController = () => {
           ),
           children: [
             {
-              path: "sellers",
+              path: "",
               element: (
                 <Suspense>
-                  <Sellers/>
+                  <Customers/>
                 </Suspense>
               ),
             },
             {
-              path: "customers",
+              path: "sellers",
               element: (
                 <Suspense>
-                  <Customers/>
+                  <Sellers/>
                 </Suspense>
               ),
             },

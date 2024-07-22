@@ -13,6 +13,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, PhoneOutgoing, Pin, PinOff } from "lucide-react";
 import { Loading } from "@/utils";
@@ -20,15 +30,22 @@ import { Fragment, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { usePinCustomerMutation } from "@/redux/api/customers-api";
 import { usePinSellersMutation } from "@/redux/api/seller-api";
+import Modal from "@/components/modal/modal";
+import PaymentForm from "@/components/payment-form/payment-form";
 import Pagination from '@mui/material/Pagination';
+import { useState } from "react";
 
 
-function TableComponent({ data, tableHeaders, isLoading, caption, page, nextPage, limit }) {
-  let { pathname } = useLocation();
-  pathname = pathname.split("/")[2];
-  const [pinCutomer, { isLoading: pinCustomerLoading }] =
-    usePinCustomerMutation();
+function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, page, nextPage, limit, handleLimit }) {
+  const [pinCutomer, { isLoading: pinCustomerLoading }] = usePinCustomerMutation();
   const [pinSeller, { isLoading: pinSellerLoading }] = usePinSellersMutation();
+  const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  let { pathname } = useLocation();
+  pathname = useMemo(() => pathname.split("/")[2], [pathname]);
+  const total = useMemo(() => Math.ceil(data?.totalCount / limit) || 0, [data?.totalCount, limit]);
+
   const handlePinCustomer = (customer) => {
     if (pathname === "sellers") {
       pinSeller({ body: customer, _id: customer._id });
@@ -36,7 +53,8 @@ function TableComponent({ data, tableHeaders, isLoading, caption, page, nextPage
       pinCutomer({ body: customer, _id: customer._id });
     }
   };
-  const total = useMemo(() => Math.ceil(data?.totalCount / limit) || 0, [data?.totalCount]);
+
+  
   return (
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
@@ -119,29 +137,52 @@ function TableComponent({ data, tableHeaders, isLoading, caption, page, nextPage
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                  <Button>To'lov</Button>
+                 <Button onClick={() => {
+                  setUser(user)
+                  setOpen(true)}}>To'lov</Button>
                 </TableCell>
               </TableRow>
             </Fragment>
           ))
         )}
-        <>
-          {pinCustomerLoading || pinSellerLoading ? (
+        {
+          user &&  <Modal open={open} setOpen={setOpen} title={`${pathname === "sellers" ? "Sotuvchi" : "Mijoz"} uchun to'lov`} description={`To'lov ${user.fname} ${user.lname} uchun`}>
+          <PaymentForm setOpen={setOpen} user={user} userType={pathname} />
+        </Modal>
+        }
+        <TableRow>
+          <TableCell colSpan={tableHeaders.length}>
+          {pinCustomerLoading || pinSellerLoading || (isFetching && !isLoading) ? (
             <div className="h-full w-full bg-[#ffffffa2] backdrop-blur-[3px] absolute top-0 left-0">
               <div className="w-full min-h-[500px] flex items-center justify-center ">
                 <Loading />
               </div>
             </div>
           ) : null}
-        </>
+          </TableCell>
+        </TableRow>
       </TableBody>
       <TableFooter>
         <TableRow>
           <TableCell colSpan={tableHeaders.length}>
-          <div className="flex justify-end">
-          <Pagination count={total} page={page} 
-          onChange={(_, value) => nextPage(value)} 
+          <div className="flex justify-end items-center gap-5">
+          <Pagination count={total} page={page}
+            onChange={(_, value) => nextPage(value)} 
           />
+          <Select onValueChange={(l) => handleLimit(l)}>
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder={limit} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           </div>
           </TableCell>
         </TableRow>

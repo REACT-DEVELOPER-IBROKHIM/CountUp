@@ -6,31 +6,31 @@ import { UserRoundMinus, LifeBuoy,UserRoundPlus,Package, SquareUser } from "luci
 const NAV_DATA = [
     {
         id: 1,
-        title: 'Customers',
-        path: '/dashboard/customers',
+        title: 'Xaridorlar',
+        path: '/dashboard',
         icon: (c) => <UserRoundPlus className={c}/>
     },
     {
         id: 2,
-        title: 'Sellers',
+        title: 'Sotuvchilar',
         path: '/dashboard/sellers',
         icon: (c) => <UserRoundMinus className={c} />
     },
     {
         id: 3,
-        title: 'Products',
+        title: 'Mahsulotlar',
         path: '/dashboard/products',
         icon:  (c) => <Package className={c}/>
     },
     {
         id: 4,
-        title: 'Help',
+        title: 'Yordam',
         path: '/dashboard/help',
         icon: (c) => <LifeBuoy className={c}/>
     },
     {
         id: 5,
-        title: 'Profile',
+        title: 'Profil',
         path: '/dashboard/profile',
         icon: (c) => <SquareUser className={c}/>
     }
@@ -49,7 +49,7 @@ export const mappings = {
                 to={nav_item.path}
                 variant="ghost"
                 size="icon"
-                className={`rounded-lg p-[12px] flex items-center gap-[20px] ${nav_item.title === "Help" && "mt-auto"}`}
+                className={`rounded-lg p-[12px] flex items-center gap-[20px] ${nav_item.title === "Yordam" && "mt-auto"}`}
                 aria-label="Seller"
               >
                 {nav_item.icon('size-5 min-w-5 min-h-5')}

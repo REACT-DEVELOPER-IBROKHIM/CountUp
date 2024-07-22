@@ -27,8 +27,16 @@ export const customersApi = api.injectEndpoints({
         }
       }),
       invalidatesTags: ["Customers"]
+    }),
+    paymentForCustomer: build.mutation({
+      query: ({body}) => ({
+        url: `/create/payment`,
+        method: "POST",
+        body
+      }),
+      invalidatesTags: ["Customers"]
     })
   })
 })
 
-export const { useGetCustomersQuery, useUpdateCustomerMutation, usePinCustomerMutation } = customersApi
+export const { useGetCustomersQuery, useUpdateCustomerMutation, usePinCustomerMutation, usePaymentForCustomerMutation } = customersApi

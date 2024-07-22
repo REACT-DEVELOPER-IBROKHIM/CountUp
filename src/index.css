@@ -68,6 +68,10 @@
   }
 }
 
+*{
+  scroll-behavior: smooth;
+}
+
 div:has( > .loader){
   display: flex;
   align-items: center;
