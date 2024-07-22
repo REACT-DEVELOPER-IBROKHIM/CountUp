@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { Outlet } from "react-router-dom"
 
 const Content = () => {
@@ -8,4 +9,4 @@ const Content = () => {
   )
 }
 
-export default Content
+export default memo(Content)

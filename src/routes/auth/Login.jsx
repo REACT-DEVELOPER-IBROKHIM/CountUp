@@ -15,7 +15,7 @@ import { useSignInMutation } from "@/redux/api/user-api";
 import { useToast } from "@/components/ui/use-toast"
 
 
-const formSchema = z.object({
+const loginFormSchema = z.object({
   username: z.string().min(4, {
     message: "Foydalanuvchi nomi kamida 4 ta belgidan iborat.",
   }),
@@ -37,9 +37,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast()
   const dispatch = useDispatch();
-  const [signInUser, {data, isError, isLoading, isSuccess, error}] = useSignInMutation();
+  const [signInUser, {data, isLoading, isSuccess}] = useSignInMutation();
   const loginForm = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       username: "",
       password: ""
