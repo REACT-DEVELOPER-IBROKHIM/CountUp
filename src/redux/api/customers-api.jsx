@@ -9,6 +9,12 @@ export const customersApi = api.injectEndpoints({
       }),
       providesTags: ["Customers"]
     }),
+    getSingleCustomer:  build.query({
+      query: ({id}) => ({
+        url: `/get/customer/${id}`
+      }),
+      providesTags: ["Customers"]
+    }),
     updateCustomer: build.mutation({
       query: ({body, _id}) => ({
         url: `/update/customer/${_id}`,
@@ -39,4 +45,4 @@ export const customersApi = api.injectEndpoints({
   })
 })
 
-export const { useGetCustomersQuery, useUpdateCustomerMutation, usePinCustomerMutation, usePaymentForCustomerMutation } = customersApi
+export const { useGetCustomersQuery, useGetSingleCustomerQuery, useUpdateCustomerMutation, usePinCustomerMutation, usePaymentForCustomerMutation } = customersApi
