@@ -9,6 +9,12 @@ export const sellersApi = api.injectEndpoints({
       }),
       providesTags: ["Sellers"]
     }),
+    getSingleSeller: build.query({
+      query: ({id}) => ({
+        url: `/get/seller/${id}`
+      }),
+      providesTags: ["Sellers"]
+    }),
     updateSellers: build.mutation({
       query: ({body, _id}) => ({
         url: `/update/seller/${_id}`,
@@ -39,4 +45,4 @@ export const sellersApi = api.injectEndpoints({
   })
 })
 
-export const { useGetSellersQuery, useUpdateSellersMutation, usePinSellersMutation, useExpenseForSellersMutation } = sellersApi
+export const { useGetSellersQuery, useGetSingleSellerQuery, useUpdateSellersMutation, usePinSellersMutation, useExpenseForSellersMutation } = sellersApi

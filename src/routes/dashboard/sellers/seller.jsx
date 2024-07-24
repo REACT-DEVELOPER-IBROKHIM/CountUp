@@ -1,9 +1,10 @@
 import { useGetSellersQuery } from "@/redux/api/seller-api";
-import { SectionTypography as ContentTitle } from "@/utils";
-import Table from "@/components/table/table";
 import { TableHead } from "@/components/ui/table";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
+import { Outlet } from "react-router-dom";
+import {useGetSingleSellerQuery} from "@/redux/api/seller-api";
+
 
 const Sellers = () => {
   const [page, setPage] = useState(1);
@@ -56,24 +57,7 @@ const Sellers = () => {
     scrollTo(0, 0);
   }, [page, limit]);
 
-  return (
-    <div>
-      <ContentTitle>Sotuvchilar</ContentTitle>
-      <div>
-        <Table
-          data={data}
-          page={page}
-          limit={limit}
-          handleLimit={handleLimit}
-          nextPage={nextPage}
-          isLoading={isLoading}
-          isFetching={isFetching}
-          tableHeaders={tableHeaders}
-          caption="Sotuvchilarning ma'lumoti"
-        />
-      </div>
-    </div>
-  );
+  return (<Outlet context={[{query: useGetSingleSellerQuery}, data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, {userType: "sellers"}]} />);
 };
 
 export default Sellers;

@@ -18,7 +18,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -27,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { EllipsisVertical, PhoneOutgoing, Pin, PinOff } from "lucide-react";
 import { Loading } from "@/utils";
 import { Fragment, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { usePinCustomerMutation } from "@/redux/api/customers-api";
 import { usePinSellersMutation } from "@/redux/api/seller-api";
 import Modal from "@/components/modal/modal";
@@ -43,18 +42,18 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
   const [open, setOpen] = useState(false);
 
   let { pathname } = useLocation();
-  pathname = useMemo(() => pathname.split("/")[2], [pathname]);
+  let userType = useMemo(() => pathname.split("/")[2], [pathname]);
   const total = useMemo(() => Math.ceil(data?.totalCount / limit) || 0, [data?.totalCount, limit]);
 
   const handlePinCustomer = (customer) => {
-    if (pathname === "sellers") {
+    console.log(userType)
+    if (userType === "sellers") {
       pinSeller({ body: customer, _id: customer._id });
     } else {
       pinCutomer({ body: customer, _id: customer._id });
     }
   };
 
-  
   return (
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
@@ -76,8 +75,10 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
               <TableRow>
                 <TableCell className="font-medium ">{index + 1}</TableCell>
                 <TableCell>
+                <Link to={`details/${user._id}`}>
                   <p>{user.fname + " " + user.lname}</p>
                   <p className="text-sm text-slate-500">{user.address}</p>
+                </Link>
                 </TableCell>
                 <TableCell>
                   <a
@@ -146,8 +147,8 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
           ))
         )}
         {
-          user &&  <Modal open={open} setOpen={setOpen} title={`${pathname === "sellers" ? "Sotuvchi" : "Mijoz"} uchun to'lov`} description={`To'lov ${user.fname} ${user.lname} uchun`}>
-          <PaymentForm setOpen={setOpen} user={user} userType={pathname} />
+          user &&  <Modal open={open} setOpen={setOpen} title={`${userType === "sellers" ? "Sotuvchi" : "Mijoz"} uchun to'lov`} description={`To'lov ${user.fname} ${user.lname} uchun`}>
+          <PaymentForm setOpen={setOpen} user={user} userType={userType} />
         </Modal>
         }
         <TableRow>

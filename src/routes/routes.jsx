@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
 
 import { Suspense } from "@/utils";
 
@@ -13,6 +13,8 @@ const Customers = lazy(() => import("@/routes/dashboard/customers/customers"));
 const Products = lazy(() => import("@/routes/dashboard/products/products"));
 const Profile = lazy(() => import("@/routes/dashboard/profile/profile"));
 const Help = lazy(() => import("@/routes/dashboard/help/help"));
+const Details = lazy(() => import("@/routes/dashboard/details/details"));
+const TableView = lazy(() => import("@/routes/dashboard/table-view/table-view"));
 
 const RouteController = () => {
   return useRoutes([
@@ -50,12 +52,30 @@ const RouteController = () => {
           ),
           children: [
             {
-              path: "",
+              path: "customers",
               element: (
                 <Suspense>
                   <Customers/>
                 </Suspense>
               ),
+              children: [
+                {
+                  path: "",
+                  element: (
+                    <Suspense>
+                      <TableView/>
+                    </Suspense>
+                  ),
+                },
+                {
+                  path: "details/:id",
+                  element: (
+                    <Suspense>
+                      <Details userType="customers"/>
+                    </Suspense>
+                  ),
+                }
+              ]
             },
             {
               path: "sellers",
@@ -64,6 +84,24 @@ const RouteController = () => {
                   <Sellers/>
                 </Suspense>
               ),
+              children: [
+                {
+                  path: "",
+                  element: (
+                    <Suspense>
+                      <TableView/>
+                    </Suspense>
+                  ),
+                },
+                {
+                  path: "details/:id",
+                  element: (
+                    <Suspense>
+                      <Details userType="sellers"/>
+                    </Suspense>
+                  ),
+                }
+              ]
             },
             {
               path: "products",
@@ -95,5 +133,14 @@ const RouteController = () => {
     }
   ]);
 }
+
+// {
+//   path: ":customerId",
+//   element: (
+//     <Suspense>
+//       <Details/>
+//     </Suspense>
+//   ),
+// }
 
 export default RouteController
