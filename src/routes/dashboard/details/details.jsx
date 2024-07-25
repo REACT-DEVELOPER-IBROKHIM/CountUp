@@ -1,13 +1,12 @@
 import { useOutletContext, useParams } from "react-router-dom";
 import { SectionTypography as ContentTitle } from "@/utils";
-import {CircleUserRound, Archive} from "lucide-react";
+import {CircleUserRound, Archive, CircleDollarSign} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Details = () => {
     const {id} = useParams();
     const [{query}] = useOutletContext();
-    const {data, isLoading} = query({id})
-    console.log(data)
+    const {data: user, isLoading} = query({id})
    
   return (
     <div className="flex h-full flex-col">
@@ -18,22 +17,32 @@ const Details = () => {
                 <CircleUserRound size={100} className="text-gray-700"/>
                 <div className="flex flex-1 justify-between items-center">
                     {
-                        data &&
+                        user &&
+                        <div>
                         <div className="flex flex-col items-start">
-                            <h3 className="text-3xl font-bold text-gray-800">{data.innerData?.fname}</h3>
-                            <h1 className="text-md font-semibold text-slate-700">{data.innerData?.lname}</h1>
+                            <h3 className="text-3xl font-bold text-gray-800">{user.innerData?.fname}</h3>
+                            <h1 className="text-md font-semibold text-slate-700">{user.innerData?.lname}</h1>
+                            <a href={`tel:${user?.innerData.phone_primary}`}>{ user?.innerData.phone_primary }</a>
+                            {/* TODO: secondary phone modal */}
+                            {/* <a className="text-slate-500" href={`tel:${user?.innerData.phone_secondary}`}>{ user?.innerData.phone_secondary }</a> */}
                             {
-                                 data && data.innerData.isActive &&  <div className="bg-green-200 text-center text-[14px] py-[3px] px-4 gap-2 rounded-[30px] text-green-900 mt-2">
+                                 user && user.innerData.isActive &&  <div className="bg-green-200 text-center text-[14px] py-[3px] px-4 gap-2 rounded-[30px] text-green-900 mt-2">
                                  Faol
                                  </div>
                             }
                            
                         </div>
+                        </div>
                     }
                    {
                    
-                    <div className="flex"> 
-                   <Button><Archive size={18}/>Arxivlash</Button>
+                    <div className="flex flex-col gap-2 items-end"> 
+                        <h3 className="text-3xl font-bold"> {user?.innerData.budget.fprice()}</h3>
+                        <address className="text-sm text-slate-500 break-words max-w-[400px] text-right">{user?.innerData.address} Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, corporis?</address>
+                        <div className="flex gap-2">
+                            <Button className="flex gap-2"><Archive size={18}/>Arxivlash</Button>
+                            <Button className="flex gap-2"><CircleDollarSign size={18}/>To'lov</Button>
+                        </div>
                     </div>
                    }
                 </div>

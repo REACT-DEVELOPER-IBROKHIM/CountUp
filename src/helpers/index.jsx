@@ -1,5 +1,5 @@
 Number.prototype.fprice = function() {
-    return this.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return this.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " UZS";
 }
 
 export const saveToLocalStorage = (key, value) => {
