@@ -1,10 +1,10 @@
 import { Outlet, useOutletContext } from "react-router-dom"
 
 const Filter = () => {
-  const [ query, data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, {userType}] = useOutletContext()
+  const outletData = useOutletContext();
   return (
     <div>
-      <Outlet context={[query, data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, userType]}/>
+      <Outlet context={outletData}/>
     </div>
   )
 }

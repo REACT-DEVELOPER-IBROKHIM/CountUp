@@ -58,8 +58,6 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
     }
   };
 
-  console.log(filter)
-
   return (
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>

@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { Navigate, Outlet, Routes, Route } from "react-router-dom";
 
 import { Suspense } from "@/utils";
 
@@ -14,146 +14,35 @@ const Products = lazy(() => import("@/routes/dashboard/products/products"));
 const Profile = lazy(() => import("@/routes/dashboard/profile/profile"));
 const Help = lazy(() => import("@/routes/dashboard/help/help"));
 const Details = lazy(() => import("@/routes/dashboard/details/details"));
-const TableView = lazy(() =>
-  import("@/routes/dashboard/table-view/table-view")
-);
+const TableView = lazy(() =>import("@/routes/dashboard/table-view/table-view"));
 const Filter = lazy(() => import("@/routes/dashboard/filter/filter"));
 
 const RouteController = () => {
-  return useRoutes([
-    {
-      path: "",
-      element: (
-        <Suspense>
-          <Home />
-          <Navigate to="/login" />
-        </Suspense>
-      ),
-    },
-    {
-      path: "login",
-      element: (
-        <Suspense>
-          <Login />
-        </Suspense>
-      ),
-    },
-    {
-      path: "dashboard",
-      element: (
-        <Suspense>
-          <Protected />
-        </Suspense>
-      ),
-      children: [
-        {
-          path: "",
-          element: (
-            <Suspense>
-              <Dashboard />
-            </Suspense>
-          ),
-          children: [
-            {
-              path: "customers",
-              element: (
-                <Suspense>
-                  <Customers />
-                </Suspense>
-              ),
-              children: [
-                {
-                  path: ":filter",
-                  element: (
-                    <Suspense>
-                      <Filter/>
-                    </Suspense>
-                  ),
-                  children: [
-                    {
-                      path: "",
-                      element: (
-                        <Suspense>
-                          <TableView />
-                        </Suspense>
-                      ),
-                    },
-                    {
-                      path: "details/:id",
-                      element: (
-                        <Suspense>
-                          <Details userType="customers" />
-                        </Suspense>
-                      ),
-                    },
-                  ]
-                }
-              ]
-            },
-            {
-              path: "sellers",
-              element: (
-                <Suspense>
-                  <Sellers />
-                </Suspense>
-              ),
-              children: [
-                {
-                  path: "",
-                  element: (
-                    <Suspense>
-                      <TableView />
-                    </Suspense>
-                  ),
-                },
-                {
-                  path: "details/:id",
-                  element: (
-                    <Suspense>
-                      <Details userType="sellers" />
-                    </Suspense>
-                  ),
-                },
-              ],
-            },
-            {
-              path: "products",
-              element: (
-                <Suspense>
-                  <Products />
-                </Suspense>
-              ),
-            },
-            {
-              path: "help",
-              element: (
-                <Suspense>
-                  <Help />
-                </Suspense>
-              ),
-            },
-            {
-              path: "profile",
-              element: (
-                <Suspense>
-                  <Profile />
-                </Suspense>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  return (
+  <Routes>
+    <Route path="" element={<Suspense><Home /><Navigate to="/login" /></Suspense>} />
+    <Route path="login" element={<Suspense><Login /></Suspense>} />
+    <Route path="dashboard" element={<Suspense><Protected /></Suspense>}>
+      <Route path="" element={<Suspense><Dashboard /></Suspense>}>
+        <Route path="customers" element={<Suspense><Customers /></Suspense>}>
+          <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
+            <Route path="" element={<Suspense><TableView /></Suspense>} />
+            <Route path="details/:id" element={<Suspense><Details userType="customers" /></Suspense>} />
+          </Route>
+        </Route>
+        
+        <Route path="sellers" element={<Suspense><Sellers /></Suspense>}>
+          <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
+            <Route path="" element={<Suspense><TableView /></Suspense>} />
+            <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>} />
+          </Route>
+        </Route>
+        <Route path="products" element={<Suspense><Products /></Suspense>} />
+        <Route path="help" element={<Suspense><Help /></Suspense>} />
+        <Route path="profile" element={<Suspense><Profile /></Suspense>} />
+      </Route>
+    </Route>
+  </Routes>)
 };
-
-// {
-//   path: ":customerId",
-//   element: (
-//     <Suspense>
-//       <Details/>
-//     </Suspense>
-//   ),
-// }
 
 export default RouteController;

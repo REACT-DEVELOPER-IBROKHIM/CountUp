@@ -4,9 +4,7 @@ import { SectionTypography as ContentTitle } from "@/utils";
 import { Badge } from "@/components/ui/badge";
 
 const TableView = () => {
-    const [,data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, userType] = useOutletContext();
-    console.log(data)
-    console
+    const {data, page, limit, handleLimit, nextPage, isLoading, isFetching, tableHeaders, userType} = useOutletContext();
     return (
         <div>
             <ContentTitle>

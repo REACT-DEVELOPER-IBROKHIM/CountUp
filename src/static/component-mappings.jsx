@@ -7,7 +7,7 @@ const NAV_DATA = [
     {
         id: 1,
         title: 'Xaridorlar',
-        path: '/dashboard/customers/active',
+        path: '/dashboard/customers',
         icon: (c) => <UserRoundPlus className={c}/>
     },
     {

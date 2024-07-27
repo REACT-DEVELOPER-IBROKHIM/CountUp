@@ -2,11 +2,12 @@ import { useGetSellersQuery } from "@/redux/api/seller-api";
 import { TableHead } from "@/components/ui/table";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {useGetSingleSellerQuery} from "@/redux/api/seller-api";
 
 
 const Sellers = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { data, isLoading, isFetching } = useGetSellersQuery({
@@ -57,7 +58,24 @@ const Sellers = () => {
     scrollTo(0, 0);
   }, [page, limit]);
 
-  return (<Outlet context={[{query: useGetSingleSellerQuery}, data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, {userType: "sellers"}]} />);
+
+  useEffect(() => {
+    navigate("/dashboard/sellers" + "/active")
+}, [])
+
+  const contextObject = {
+    query: useGetSingleSellerQuery,
+    data,
+    tableHeaders,
+    isLoading,
+    isFetching,
+    page,
+    nextPage,
+    limit,
+    handleLimit,
+  };
+
+  return (<Outlet context={contextObject} />);
 };
 
 export default Sellers;

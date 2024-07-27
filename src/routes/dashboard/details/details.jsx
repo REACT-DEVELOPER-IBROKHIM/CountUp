@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 
 const Details = () => {
     const {id} = useParams();
-    const [{query}] = useOutletContext();
+    const {query} = useOutletContext();
     const {data: user, isLoading} = query({id})
    
   return (
     <div className="flex h-full flex-col">
         <ContentTitle>Batafsil</ContentTitle>
         <div className="w-full flex-1 grid grid-rows-3 grid-flow-col gap-4">
-            <div className="row-span-3 col-span-1 shadow-3xl rounded-lg"></div>
+            <div className="row-span-3 col-span-2 shadow-3xl rounded-lg"></div>
             <div className="col-span-3  shadow-3xl flex items-center px-10 rounded-lg gap-4">
                 <CircleUserRound size={100} className="text-gray-700"/>
                 <div className="flex flex-1 justify-between items-center">
