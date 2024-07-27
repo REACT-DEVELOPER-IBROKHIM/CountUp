@@ -50,7 +50,6 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
   const total = useMemo(() => Math.ceil(data?.totalCount / limit) || 0, [data?.totalCount, limit]);
 
   const handlePinCustomer = (customer) => {
-    console.log(userType)
     if (userType === "sellers") {
       pinSeller({ body: customer, _id: customer._id });
     } else {
@@ -59,7 +58,6 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
   };
 
 
-  console.log(data?.innerData)
   return (
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
