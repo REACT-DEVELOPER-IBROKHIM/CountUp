@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import Modal from "@/components/modal/modal";
 import { useState } from "react";
 import CreateUser from "@/components/create-user/create-user";
+import { createPortal } from "react-dom";
 
 const TableView = () => {
   const [open, setOpen] = useState(false);
@@ -48,15 +49,15 @@ const TableView = () => {
       />
       {
         open ? 
-        <Modal
-            open={open}
-            setOpen={setOpen}
-            title={"Yangi mijoz qo'shish"}
-            description={"Lorem ipsum"}
-            size="1000px"
-        >
-            <CreateUser setOpen={setOpen} userType={userType} />
-        </Modal>
+       createPortal( <Modal
+        open={open}
+        setOpen={setOpen}
+        title={"Yangi mijoz qo'shish"}
+        description={"Lorem ipsum"}
+        size="900px"
+    >
+        <CreateUser setOpen={setOpen} userType={userType} />
+    </Modal>,  document.getElementById("modal-controller"))
         :
         <></>
       } 
