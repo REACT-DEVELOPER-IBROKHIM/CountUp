@@ -34,6 +34,7 @@ import Modal from "@/components/modal/modal";
 import PaymentForm from "@/components/payment-form/payment-form";
 import Pagination from '@mui/material/Pagination';
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 
 function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, page, nextPage, limit, handleLimit }) {
@@ -157,9 +158,9 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
           ))
         )}
         {
-          user &&  <Modal open={open} setOpen={setOpen} title={`${userType === "sellers" ? "Sotuvchi" : "Mijoz"} uchun to'lov`} description={`To'lov ${user.fname} ${user.lname} uchun`}>
-          <PaymentForm setOpen={setOpen} user={user} userType={userType} />
-        </Modal>
+          user &&  createPortal(<Modal open={open} setOpen={setOpen} title={`${userType === "sellers" ? "Sotuvchi" : "Mijoz"} uchun to'lov`} description={`To'lov ${user.fname} ${user.lname} uchun`}>
+            <PaymentForm setOpen={setOpen} user={user} userType={userType} />
+          </Modal>, document.getElementById("modal-controller"))
         }
         <TableRow>
           <TableCell colSpan={tableHeaders.length}>
