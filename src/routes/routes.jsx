@@ -1,7 +1,8 @@
 import { lazy } from "react";
-import { Navigate, Outlet, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import { Suspense } from "@/utils";
+
 
 const Home = lazy(() => import("@/routes/home/Home"));
 const Login = lazy(() => import("@/routes/auth/Login"));
@@ -16,6 +17,9 @@ const Help = lazy(() => import("@/routes/dashboard/help/help"));
 const Details = lazy(() => import("@/routes/dashboard/details/details"));
 const TableView = lazy(() =>import("@/routes/dashboard/table-view/table-view"));
 const Filter = lazy(() => import("@/routes/dashboard/filter/filter"));
+const DetailsPayment = lazy(() => import("@/routes/dashboard/details/payment-history/payment-history"));
+const DetailsProfile = lazy(() => import("@/routes/dashboard/details/profile/profile"));
+const DetailsProducts = lazy(() => import("@/routes/dashboard/details/products/products"));
 
 const RouteController = () => {
   return (
@@ -27,14 +31,22 @@ const RouteController = () => {
         <Route path="customers" element={<Suspense><Customers /></Suspense>}>
           <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
             <Route path="" element={<Suspense><TableView /></Suspense>} />
-            <Route path="details/:id" element={<Suspense><Details userType="customers" /></Suspense>} />
+            <Route path="details/:id" element={<Suspense><Details userType="customers" /></Suspense>}>
+                <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
+                <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
+                <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
+            </Route>
           </Route>
         </Route>
         
         <Route path="sellers" element={<Suspense><Sellers /></Suspense>}>
           <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
             <Route path="" element={<Suspense><TableView /></Suspense>} />
-            <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>} />
+            <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>}>
+                <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
+                <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
+                <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
+            </Route>
           </Route>
         </Route>
         <Route path="products" element={<Suspense><Products /></Suspense>} />

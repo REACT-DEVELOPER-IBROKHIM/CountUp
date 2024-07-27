@@ -2,10 +2,11 @@ import { TableHead } from "@/components/ui/table";
 import { useGetCustomersQuery } from "@/redux/api/customers-api";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {useGetSingleCustomerQuery} from "@/redux/api/customers-api";
 
 const Customers = () => { 
+  const {pathname} = useLocation()
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -43,8 +44,10 @@ const Customers = () => {
     }, [page, limit])
 
     useEffect(() => {
-        navigate("/dashboard/customers" + "/active")
-    }, [])
+        if(pathname === "/dashboard/customers"){
+            navigate("/dashboard/customers/active")
+        }
+    }, [pathname])
   
     const tableHeaders = ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"].map(
       (header, index, arr) => (

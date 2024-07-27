@@ -2,11 +2,12 @@ import { useGetSellersQuery } from "@/redux/api/seller-api";
 import { TableHead } from "@/components/ui/table";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import {useGetSingleSellerQuery} from "@/redux/api/seller-api";
 
 
 const Sellers = () => {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -60,8 +61,10 @@ const Sellers = () => {
 
 
   useEffect(() => {
-    navigate("/dashboard/sellers" + "/active")
-}, [])
+    if(pathname === "/dashboard/sellers"){
+      navigate("/dashboard/sellers/active")
+    }
+}, [pathname])
 
   const contextObject = {
     query: useGetSingleSellerQuery,
