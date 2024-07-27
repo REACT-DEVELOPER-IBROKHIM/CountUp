@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
 import { memo, useEffect } from "react";
-import { usePaymentForCustomerMutation } from "@/redux/api/customers-api";
-import { useExpenseForSellersMutation } from "@/redux/api/seller-api";
+import { usePaymentForCustomerMutation } from "@/redux/api/payment-api";
+import { useExpenseForSellersMutation } from "@/redux/api/expense-api";
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -99,8 +99,8 @@ const PaymentForm = ({user, userType, setOpen}) => {
             />
 
            
-            <Button className="w-full" type="submit" disabled={paymentLoading} > 
-            {paymentLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />} 
+            <Button className="w-full" type="submit" disabled={paymentLoading || expenseLoading} > 
+            {(paymentLoading || expenseLoading) && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />} 
                 To'lov qilish
             </Button>
  

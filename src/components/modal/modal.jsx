@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/dialog";
 
 
-const Modal = ({ title, description, children, open, setOpen}) => {
+const Modal = ({ title, description, children, open, setOpen, size}) => {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+    <Dialog open={open} onOpenChange={setOpen} >
+      <DialogContent className={size ? `max-w-[${size}]` : ""}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
