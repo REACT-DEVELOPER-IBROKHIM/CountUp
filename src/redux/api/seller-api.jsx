@@ -34,9 +34,9 @@ export const sellersApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Sellers"]
     }),
-    expenseForSellers: build.mutation({
-      query: ({body}) => ({
-        url: `/create/expense`,
+    createSeller: build.mutation({
+      query: (body) => ({
+        url: `/create/seller`,
         method: "POST",
         body
       }),
@@ -45,4 +45,4 @@ export const sellersApi = api.injectEndpoints({
   })
 })
 
-export const { useGetSellersQuery, useGetSingleSellerQuery, useUpdateSellersMutation, usePinSellersMutation, useExpenseForSellersMutation } = sellersApi
+export const { useGetSellersQuery, useGetSingleSellerQuery, useUpdateSellersMutation, usePinSellersMutation, useCreateSellerMutation } = sellersApi

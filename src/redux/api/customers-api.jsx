@@ -28,15 +28,14 @@ export const customersApi = api.injectEndpoints({
         url: `/update/customer/${_id}`,
         method: "PATCH",
         body: {
-          ...body,
           pin: !body.pin
         }
       }),
       invalidatesTags: ["Customers"]
     }),
-    paymentForCustomer: build.mutation({
-      query: ({body}) => ({
-        url: `/create/payment`,
+    createCustomer: build.mutation({
+      query: (body) => ({
+        url: `/create/customer`,
         method: "POST",
         body
       }),
@@ -45,4 +44,4 @@ export const customersApi = api.injectEndpoints({
   })
 })
 
-export const { useGetCustomersQuery, useGetSingleCustomerQuery, useUpdateCustomerMutation, usePinCustomerMutation, usePaymentForCustomerMutation } = customersApi
+export const { useGetCustomersQuery, useGetSingleCustomerQuery, useUpdateCustomerMutation, usePinCustomerMutation, useCreateCustomerMutation } = customersApi

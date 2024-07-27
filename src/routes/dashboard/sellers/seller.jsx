@@ -73,6 +73,7 @@ const Sellers = () => {
     nextPage,
     limit,
     handleLimit,
+    userType: "sellers"
   };
 
   return (<Outlet context={contextObject} />);
