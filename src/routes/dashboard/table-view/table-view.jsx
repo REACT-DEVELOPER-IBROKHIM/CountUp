@@ -54,7 +54,7 @@ const TableView = () => {
         setOpen={setOpen}
         title={"Yangi mijoz qo'shish"}
         description={"Lorem ipsum"}
-        size="900px"
+        size="1000px"
     >
         <CreateUser setOpen={setOpen} userType={userType} />
     </Modal>,  document.getElementById("modal-controller"))

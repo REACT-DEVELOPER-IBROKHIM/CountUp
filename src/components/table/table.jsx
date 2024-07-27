@@ -38,7 +38,6 @@ import { createPortal } from "react-dom";
 
 
 function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, page, nextPage, limit, handleLimit }) {
-  const { filter } = useParams();
   const [pinCutomer, { isLoading: pinCustomerLoading }] = usePinCustomerMutation();
   const [pinSeller, { isLoading: pinSellerLoading }] = usePinSellersMutation();
   const {data: profile} = useGetProfileQuery();
@@ -59,6 +58,8 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
     }
   };
 
+
+  console.log(data?.innerData)
   return (
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
