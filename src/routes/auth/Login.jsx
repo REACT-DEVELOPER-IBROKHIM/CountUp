@@ -27,13 +27,12 @@ const loginFormSchema = z.object({
   }),
 })
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { loginUser } from "@/redux/slices/auth-slice";
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const auth = useSelector(state => state.auth);
   const navigate = useNavigate();
   const { toast } = useToast()
   const dispatch = useDispatch();
@@ -50,21 +49,16 @@ const Login = () => {
     signInUser(data)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(isSuccess){
       dispatch(loginUser(data.innerData))
       toast({
         title: "Muvvafiqatli tizimga kirtingiz!"
       })
-      navigate("/dashboard/customers/active");
+      navigate("/dashboard/customers");
     }
   }, [isSuccess])
 
-  useEffect(() => {
-    if(auth.token){
-      navigate("/dashboard")
-    }
-  }, [])
 
   return (
    <div className="w-full h-screen grid place-items-center">

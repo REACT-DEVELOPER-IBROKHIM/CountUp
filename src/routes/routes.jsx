@@ -1,5 +1,6 @@
 import { lazy } from "react";
-import { Navigate, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Suspense } from "@/utils";
 
@@ -21,10 +22,11 @@ const DetailsProfile = lazy(() => import("@/routes/dashboard/details/profile/pro
 const DetailsProducts = lazy(() => import("@/routes/dashboard/details/products/products"));
 
 const RouteController = () => {
+  const auth = useSelector(state => state.auth);
   return (
   <Routes>
-    <Route path="" element={<Suspense><Home /><Navigate to="/login" /></Suspense>} />
-    <Route path="login" element={<Suspense><Login /></Suspense>} />
+    <Route path="" element={<Suspense><Home /></Suspense>} />
+    <Route path="login" element={ auth.token ? <Navigate to="/dashboard" /> : <Suspense><Login /></Suspense>} />
     <Route path="dashboard" element={<Suspense><Protected /></Suspense>}>
       <Route path="" element={<Suspense><Dashboard /></Suspense>}>
         <Route path="customers" element={<Suspense><Customers /></Suspense>}>
@@ -35,7 +37,6 @@ const RouteController = () => {
                 <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
             </Route>
         </Route>
-        
         <Route path="sellers" element={<Suspense><Sellers /></Suspense>}>
             <Route path="" element={<Suspense><TableView /></Suspense>} />
             <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>}>

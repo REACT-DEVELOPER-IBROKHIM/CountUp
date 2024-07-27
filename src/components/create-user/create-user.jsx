@@ -10,13 +10,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { memo, useEffect } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useToast } from "@/components/ui/use-toast";
-import { PatternFormat } from "react-number-format";
 import { useCreateSellerMutation } from "@/redux/api/seller-api";
 import { useCreateCustomerMutation } from "@/redux/api/customers-api";
+import { PatternFormat } from "react-number-format";
 
 const userFormSchema = z.object({
   fname: z.string({
@@ -106,28 +105,36 @@ const CreateUser = ({ userType, setOpen }) => {
           <FormField
             control={userForm.control}
             name="phone_primary"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Telefon</FormLabel>
-                <FormControl>
-                  <Input placeholder="Telefon" {...field} />
-                  {/* <input type="text" /> */}
-                  {/* <PatternFormat format="+998 ## ### ## ##" allowEmptyFormatting mask="_"  />; */}
-                </FormControl>
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const { ref, ...rest } = field;
+              return (
+                <FormItem>
+                  <FormLabel>Telefon</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-col border-[1px] border-gray-200">
+                      <PatternFormat {...rest} className="rounded-md" format="+998 ## ### ## ##" allowEmptyFormatting mask="_" />
+                    </div>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={userForm.control}
             name="phone_secondary"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ikkinchi telefon</FormLabel>
-                <FormControl>
-                  <Input placeholder="Telefon" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const { ref, ...rest } = field;
+              return (
+                <FormItem>
+                  <FormLabel>Qo'shimcha telefon</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-col border-[1px] border-gray-200">
+                      <PatternFormat {...rest} className="rounded-md" format="+998 ## ### ## ##" allowEmptyFormatting mask="_" />
+                    </div>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={userForm.control}
