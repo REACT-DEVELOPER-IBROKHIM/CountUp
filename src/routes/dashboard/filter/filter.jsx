@@ -2,11 +2,7 @@ import { Outlet, useOutletContext } from "react-router-dom"
 
 const Filter = () => {
   const outletData = useOutletContext();
-  return (
-    <div>
-      <Outlet context={outletData}/>
-    </div>
-  )
+  return (<Outlet context={outletData}/>)
 }
 
 export default Filter
