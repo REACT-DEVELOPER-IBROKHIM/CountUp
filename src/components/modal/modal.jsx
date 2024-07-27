@@ -9,6 +9,7 @@ import {
 
 
 const Modal = ({ title, description, children, open, setOpen, size}) => {
+  console.log(size);
   return (
     <Dialog open={open} onOpenChange={setOpen} >
       <DialogContent className={size ? `max-w-[${size}]` : ""}>

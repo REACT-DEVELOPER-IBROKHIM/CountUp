@@ -21,7 +21,6 @@ const TableView = () => {
     tableHeaders,
     userType,
   } = useOutletContext();
-  console.log(userType);
   return (
     <div>
       <ContentTitle>
@@ -47,15 +46,20 @@ const TableView = () => {
         tableHeaders={tableHeaders}
         caption="Mijozlarning ma'lumoti"
       />
-      <Modal
-        open={open}
-        setOpen={setOpen}
-        title={"Yangi mijoz qo'shish"}
-        description={"Lorem ipsum"}
-        size="1000px"
-      >
-        <CreateUser setOpen={setOpen} userType={userType} />
-      </Modal>
+      {
+        open ? 
+        <Modal
+            open={open}
+            setOpen={setOpen}
+            title={"Yangi mijoz qo'shish"}
+            description={"Lorem ipsum"}
+            size="1000px"
+        >
+            <CreateUser setOpen={setOpen} userType={userType} />
+        </Modal>
+        :
+        <></>
+      } 
     </div>
   );
 };
