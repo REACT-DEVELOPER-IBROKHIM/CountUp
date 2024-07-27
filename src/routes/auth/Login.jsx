@@ -56,7 +56,7 @@ const Login = () => {
       toast({
         title: "Muvvafiqatli tizimga kirtingiz!"
       })
-      navigate("/dashboard");
+      navigate("/dashboard/customers/active");
     }
   }, [isSuccess])
 

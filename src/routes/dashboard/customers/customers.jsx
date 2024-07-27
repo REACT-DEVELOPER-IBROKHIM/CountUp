@@ -2,10 +2,11 @@ import { TableHead } from "@/components/ui/table";
 import { useGetCustomersQuery } from "@/redux/api/customers-api";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {useGetSingleCustomerQuery} from "@/redux/api/customers-api";
 
-const Customers = () => {  
+const Customers = () => { 
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const { data, isLoading, isFetching } = useGetCustomersQuery({ limit, skip: page - 1 });
@@ -40,6 +41,10 @@ const Customers = () => {
     useEffect(() => {
         scrollTo(0,0)
     }, [page, limit])
+
+    useEffect(() => {
+        navigate("/dashboard/customers" + "/active")
+    }, [])
   
     const tableHeaders = ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"].map(
       (header, index, arr) => (
@@ -51,7 +56,21 @@ const Customers = () => {
         </TableHead>
       )
     );
-  return (<Outlet context={[{query: useGetSingleCustomerQuery}, data, tableHeaders, isLoading, isFetching, page, nextPage, limit, handleLimit, {userType: "customers"}]} />);
+
+    const contextObject = {
+      query: useGetSingleCustomerQuery,
+      data,
+      tableHeaders,
+      isLoading,
+      isFetching,
+      page,
+      nextPage,
+      limit,
+      handleLimit,
+      userType: "customers"
+    }
+
+  return (<Outlet context={contextObject} />);
 };
 
 export default Customers;

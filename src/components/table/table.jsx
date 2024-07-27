@@ -23,12 +23,13 @@ import {
 } from "@/components/ui/select"
 
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, PhoneOutgoing, Pin, PinOff } from "lucide-react";
+import { EllipsisVertical, PhoneOutgoing, Pin, CircleDollarSign } from "lucide-react";
 import { Loading } from "@/utils";
 import { Fragment, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { usePinCustomerMutation } from "@/redux/api/customers-api";
 import { usePinSellersMutation } from "@/redux/api/seller-api";
+import { useGetProfileQuery } from "@/redux/api/profile-api";
 import Modal from "@/components/modal/modal";
 import PaymentForm from "@/components/payment-form/payment-form";
 import Pagination from '@mui/material/Pagination';
@@ -36,10 +37,13 @@ import { useState } from "react";
 
 
 function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, page, nextPage, limit, handleLimit }) {
+  const { filter } = useParams();
   const [pinCutomer, { isLoading: pinCustomerLoading }] = usePinCustomerMutation();
   const [pinSeller, { isLoading: pinSellerLoading }] = usePinSellersMutation();
+  const {data: profile} = useGetProfileQuery();
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const today = profile?.innerData?.date.split("T")[0];
 
   let { pathname } = useLocation();
   let userType = useMemo(() => pathname.split("/")[2], [pathname]);
@@ -73,7 +77,13 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
           data?.innerData.map((user, index) => (
             <Fragment key={user._id}>
               <TableRow>
-                <TableCell className="font-medium ">{index + 1}</TableCell>
+                <TableCell className="font-medium ">
+                <div className="flex gap-1">
+                  {index + 1} 
+                  {/* TODO: user index */}
+                  {user.pin && <Pin size={14} className="rotate-[30deg] mt-[-5px] fill-black" />}
+                </div>
+                </TableCell>
                 <TableCell>
                 <Link to={`details/${user._id}`}>
                   <p>{user.fname + " " + user.lname}</p>
@@ -102,20 +112,15 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
                         : "text-red-500")
                     }
                   >
-                    {user?.budget.fprice()} UZS
+                    {user?.budget.fprice()}
                   </span>
                 </TableCell>
                 <TableCell className="text-right flex items-center justify-end gap-2">
-                  <div
-                    className="p-2 cursor-pointer active:bg-slate-100 rounded-full"
-                    onDoubleClick={() => handlePinCustomer(user)}
-                  >
-                    {user.pin ? (
-                      <PinOff size={18} className="rotate-[30deg]" />
-                    ) : (
-                      <Pin size={18} className="rotate-[30deg]" />
-                    )}
-                  </div>
+                  {user?.isPaidToday.split("T")[0] === today &&
+                    <div>
+                      <CircleDollarSign/>
+                    </div>
+                  }
                   <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -129,6 +134,11 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="text-md cursor-pointer" onClick={() => handlePinCustomer(user)}>
+                          {
+                            user.pin ? "Unpin" : "Pin"
+                          }
+                        </DropdownMenuItem>
                         <DropdownMenuItem className="text-md cursor-pointer">
                           Tahrirlash
                         </DropdownMenuItem>
