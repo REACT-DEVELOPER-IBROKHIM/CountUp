@@ -86,7 +86,7 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
                 </div>
                 </TableCell>
                 <TableCell>
-                <Link to={`details/${user._id}`}>
+                <Link to={`details/${user._id}/d-products`}>
                   <p>{user.fname + " " + user.lname}</p>
                   <p className="text-sm text-slate-500">{user.address}</p>
                 </Link>

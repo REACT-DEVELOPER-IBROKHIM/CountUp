@@ -60,11 +60,7 @@ const Sellers = () => {
   }, [page, limit]);
 
 
-  useEffect(() => {
-    if(pathname === "/dashboard/sellers"){
-      navigate("/dashboard/sellers/active")
-    }
-}, [pathname])
+
 
   const contextObject = {
     query: useGetSingleSellerQuery,
