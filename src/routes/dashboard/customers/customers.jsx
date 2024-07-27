@@ -43,12 +43,6 @@ const Customers = () => {
         scrollTo(0,0)
     }, [page, limit])
 
-    useEffect(() => {
-        if(pathname === "/dashboard/customers"){
-            navigate("/dashboard/customers/active")
-        }
-    }, [pathname])
-  
     const tableHeaders = ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"].map(
       (header, index, arr) => (
         <TableHead

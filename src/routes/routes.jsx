@@ -29,25 +29,21 @@ const RouteController = () => {
     <Route path="dashboard" element={<Suspense><Protected /></Suspense>}>
       <Route path="" element={<Suspense><Dashboard /></Suspense>}>
         <Route path="customers" element={<Suspense><Customers /></Suspense>}>
-          <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
             <Route path="" element={<Suspense><TableView /></Suspense>} />
             <Route path="details/:id" element={<Suspense><Details userType="customers" /></Suspense>}>
                 <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
                 <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
                 <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
             </Route>
-          </Route>
         </Route>
         
         <Route path="sellers" element={<Suspense><Sellers /></Suspense>}>
-          <Route path=":filter" element={<Suspense><Filter /></Suspense>} >
             <Route path="" element={<Suspense><TableView /></Suspense>} />
             <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>}>
                 <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
                 <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
                 <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
             </Route>
-          </Route>
         </Route>
         <Route path="products" element={<Suspense><Products /></Suspense>} />
         <Route path="help" element={<Suspense><Help /></Suspense>} />
