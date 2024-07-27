@@ -16,7 +16,6 @@ const Profile = lazy(() => import("@/routes/dashboard/profile/profile"));
 const Help = lazy(() => import("@/routes/dashboard/help/help"));
 const Details = lazy(() => import("@/routes/dashboard/details/details"));
 const TableView = lazy(() =>import("@/routes/dashboard/table-view/table-view"));
-const Filter = lazy(() => import("@/routes/dashboard/filter/filter"));
 const DetailsPayment = lazy(() => import("@/routes/dashboard/details/payment-history/payment-history"));
 const DetailsProfile = lazy(() => import("@/routes/dashboard/details/profile/profile"));
 const DetailsProducts = lazy(() => import("@/routes/dashboard/details/products/products"));
