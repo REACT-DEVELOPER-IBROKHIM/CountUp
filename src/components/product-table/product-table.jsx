@@ -9,6 +9,7 @@ import {
   TableCell,
   TableFooter,
   TableHeader,
+  TableHead,
   TableRow,
 } from "@/components/ui/table";
 import {
@@ -88,7 +89,15 @@ const ProductTable = (props) => {
       <Table className="w-full shadow">
         <TableCaption>Mahsulotlar</TableCaption>
         <TableHeader>
-          <TableRow>{tableHeaders}</TableRow>
+          <TableRow>{tableHeaders.map(
+          (header, index, arr) => (
+            <TableHead
+              key={index}
+            >
+          {header}
+        </TableHead>
+      )
+    )}</TableRow>
         </TableHeader>
         <TableBody className="relative">
           {isLoading ? (

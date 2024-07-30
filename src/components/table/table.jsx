@@ -5,14 +5,9 @@ import {
   TableCell,
   TableFooter,
   TableHeader,
+  TableHead,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -46,6 +41,7 @@ import PaymentForm from "@/components/payment-form/payment-form";
 import Pagination from "@mui/material/Pagination";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import Dropdown from "../dropdown/dropdown";
 import Empty from "../empty/empty";
 
 function TableComponent({
@@ -80,11 +76,6 @@ function TableComponent({
   );
 
   const handlePin = (user) => {
-    // if (userType === "sellers") {
-    //   pinSeller({ body: user, _id: user._id });
-    // } else {
-    //   pinCutomer({ body: user, _id: user._id });
-    // }
     switch (userType) {
       case "customers":
         pinCutomer({ body: user, _id: user._id });
@@ -111,7 +102,16 @@ function TableComponent({
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
       <TableHeader>
-        <TableRow>{tableHeaders}</TableRow>
+        <TableRow>{tableHeaders.map(
+        (header, index, arr) => (
+          <TableHead
+            className={arr.length - 1 === index ? "text-right" : ""}
+            key={index}
+          >
+          {header}
+        </TableHead>
+      )
+    )}</TableRow>
       </TableHeader>
       <TableBody className="relative">
         {isLoading ? (
@@ -132,17 +132,12 @@ function TableComponent({
           data?.innerData.map((user, index) => (
             <Fragment key={user._id}>
               <TableRow>
-                <TableCell className="font-medium ">
-                  <div className="flex gap-1">
-                    {index + 1}
-                    {/* TODO: user index */}
-                    {user.pin && (
-                      <Pin
-                        size={14}
-                        className="rotate-[30deg] mt-[-5px] fill-black"
-                      />
-                    )}
-                  </div>
+                <TableCell className="font-medium">
+                <div className="flex gap-1">
+                  {index + 1} 
+                  {/* TODO: user index */}
+                  {user.pin && <Pin size={14} className="rotate-[30deg] mt-[-5px] fill-black" />}
+                </div>
                 </TableCell>
                 <TableCell>
                   <Link to={`details/${user._id}/d-products`}>
@@ -182,35 +177,7 @@ function TableComponent({
                     </div>
                   )}
                   <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <EllipsisVertical />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          className="text-md cursor-pointer"
-                          onClick={() => handlePin(user)}
-                        >
-                          {user.pin ? "Unpin" : "Pin"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-md cursor-pointer">
-                          Tahrirlash
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleArchive(user)}
-                          className="text-md cursor-pointer"
-                        >
-                          {user.isArchive ? "Arxivdan chiqarish" : "Arxivlash"}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Dropdown trigger={<EllipsisVertical />} data={user} menuitems={[user?.pin ? "Unpin" : "Pin", "Tahrirlash", "Arxivlash"]} menuactions={[handlePinCustomer]}/>
                   </div>
                   <Button
                     onClick={() => {

@@ -25,7 +25,7 @@ const Details = () => {
                 mappings.profile({pathname})       
             }
           </div>
-          <div className="col-span-3 shadow-3xl flex items-center px-10 rounded-lg gap-4">
+          <div className="max-h-[270px] col-span-3 shadow-3xl flex items-center px-10 rounded-lg gap-4">
             <CircleUserRound size={100} className="text-gray-700" />
             <div className="flex flex-1 justify-between items-center">
               {user && (
@@ -74,8 +74,8 @@ const Details = () => {
               }
             </div>
           </div>
-          <div className="row-span-2 col-span-3 shadow-3xl rounded-lg">
-            <Outlet />
+          <div className="min-h-[400px] row-span-2 col-span-3 shadow-3xl rounded-lg w-full p-5">
+            <Outlet context={ {_id: user.innerData._id} } />
           </div>
         </div>
       )}

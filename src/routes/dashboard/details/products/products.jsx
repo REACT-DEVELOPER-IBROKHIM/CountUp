@@ -1,8 +1,10 @@
-import React from 'react'
+import { SectionTypography as ContentTitle } from "@/utils"
 
 const Products = () => {
   return (
-    <div>Products</div>
+    <div>
+        <ContentTitle>Mahsulotlar</ContentTitle>
+    </div>
   )
 }
 
