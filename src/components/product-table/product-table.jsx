@@ -37,6 +37,7 @@ const ProductTable = (props) => {
     nextPage,
     isLoading,
     isFetching,
+    isError,
     tableHeaders,
     userType,
   } = props;
@@ -77,7 +78,7 @@ const ProductTable = (props) => {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             Mahsulotlar
-            {!isLoading && <Badge>{data?.totalCount}</Badge>}
+            {!isFetching && !isError  &&  <Badge>{data?.totalCount}</Badge>}
           </div>
           <Button onClick={() => setOpen(true)} className="flex gap-1">
             <Plus size={18} />
