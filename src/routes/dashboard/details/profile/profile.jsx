@@ -1,8 +1,10 @@
-import React from 'react'
+import { SectionTypography as ContentTitle } from "@/utils"
 
 const Profile = () => {
   return (
-    <div>Profile</div>
+    <div>
+        <ContentTitle>Profil</ContentTitle>
+    </div>
   )
 }
 

@@ -33,16 +33,6 @@ const Sellers = () => {
       setLimit(parseInt(limit));
     }
   }, []);
-  const tableHeaders = ["№", "FIO", "Telfon", "Budjet", "Boshqaruv"].map(
-    (header, index, arr) => (
-      <TableHead
-        className={arr.length - 1 === index ? "text-right" : ""}
-        key={index}
-      >
-        {header}
-      </TableHead>
-    )
-  );
 
   const handleLimit = useCallback(
     (value) => {
@@ -65,7 +55,7 @@ const Sellers = () => {
   const contextObject = {
     query: useGetSingleSellerQuery,
     data,
-    tableHeaders,
+    tableHeaders: ["№", "FIO", "Telfon", "Budjet", "Boshqaruv"],
     isLoading,
     isFetching,
     page,

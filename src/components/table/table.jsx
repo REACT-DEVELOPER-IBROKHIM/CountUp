@@ -5,14 +5,9 @@ import {
   TableCell,
   TableFooter,
   TableHeader,
+  TableHead,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -35,6 +30,7 @@ import PaymentForm from "@/components/payment-form/payment-form";
 import Pagination from '@mui/material/Pagination';
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import Dropdown from "../dropdown/dropdown";
 
 
 function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, page, nextPage, limit, handleLimit }) {
@@ -62,7 +58,16 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
     <Table className="w-full shadow">
       <TableCaption>{caption}</TableCaption>
       <TableHeader>
-        <TableRow>{tableHeaders}</TableRow>
+        <TableRow>{tableHeaders.map(
+        (header, index, arr) => (
+          <TableHead
+            className={arr.length - 1 === index ? "text-right" : ""}
+            key={index}
+          >
+          {header}
+        </TableHead>
+      )
+    )}</TableRow>
       </TableHeader>
       <TableBody className="relative">
         {isLoading ? (
@@ -77,7 +82,7 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
           data?.innerData.map((user, index) => (
             <Fragment key={user._id}>
               <TableRow>
-                <TableCell className="font-medium ">
+                <TableCell className="font-medium">
                 <div className="flex gap-1">
                   {index + 1} 
                   {/* TODO: user index */}
@@ -122,31 +127,7 @@ function TableComponent({ data, tableHeaders, isLoading, caption, isFetching, pa
                     </div>
                   }
                   <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <EllipsisVertical />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-md cursor-pointer" onClick={() => handlePinCustomer(user)}>
-                          {
-                            user.pin ? "Unpin" : "Pin"
-                          }
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-md cursor-pointer">
-                          Tahrirlash
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-md cursor-pointer">
-                          Arxivlash
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Dropdown trigger={<EllipsisVertical />} data={user} menuitems={[user?.pin ? "Unpin" : "Pin", "Tahrirlash", "Arxivlash"]} menuactions={[handlePinCustomer]}/>
                   </div>
                  <Button onClick={() => {
                   setUser(user)

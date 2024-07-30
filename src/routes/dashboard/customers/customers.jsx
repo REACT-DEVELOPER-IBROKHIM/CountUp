@@ -43,21 +43,10 @@ const Customers = () => {
         scrollTo(0,0)
     }, [page, limit])
 
-    const tableHeaders = ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"].map(
-      (header, index, arr) => (
-        <TableHead
-          className={arr.length - 1 === index ? "text-right" : ""}
-          key={index}
-        >
-          {header}
-        </TableHead>
-      )
-    );
-
     const contextObject = {
       query: useGetSingleCustomerQuery,
       data,
-      tableHeaders,
+      tableHeaders: ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"],
       isLoading,
       isFetching,
       page,

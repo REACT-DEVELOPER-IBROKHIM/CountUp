@@ -48,21 +48,10 @@ const Products = () => {
     scrollTo(0, 0);
   }, [page, limit]);
 
-
-  const tableHeaders = ["№", "Nomi", "Miqdori", "Narxi", "Jami"].map(
-    (header, index, arr) => (
-      <TableHead
-        key={index}
-      >
-        {header}
-      </TableHead>
-    )
-  );
-
   const contextObject = {
     query: useGetSingleProductQuery,
     data,
-    tableHeaders,
+    tableHeaders: ["№", "Nomi", "Miqdori", "Narxi", "Jami"],
     isLoading,
     isFetching,
     page,
