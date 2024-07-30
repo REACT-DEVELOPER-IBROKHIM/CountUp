@@ -177,7 +177,7 @@ function TableComponent({
                     </div>
                   )}
                   <div className="p-2 cursor-pointer active:bg-slate-100 rounded-full">
-                    <Dropdown trigger={<EllipsisVertical />} data={user} menuitems={[user?.pin ? "Unpin" : "Pin", "Tahrirlash", "Arxivlash"]} menuactions={[handlePinCustomer]}/>
+                    <Dropdown trigger={<EllipsisVertical />} data={user} menuitems={[user?.pin ? "Unpin" : "Pin", "Tahrirlash", user?.isArchive ? "Arxivdan chiqarish" : "Arxivlash"]} menuactions={[() => handlePin(user), , () => handleArchive(user)]}/>
                   </div>
                   <Button
                     onClick={() => {
