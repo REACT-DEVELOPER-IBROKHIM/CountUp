@@ -28,7 +28,6 @@ export const sellersApi = api.injectEndpoints({
         url: `/update/seller/${_id}`,
         method: "PATCH",
         body: {
-          ...body,
           pin: !body.pin
         }
       }),

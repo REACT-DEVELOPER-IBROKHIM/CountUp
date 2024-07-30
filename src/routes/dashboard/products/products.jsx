@@ -11,7 +11,7 @@ const Products = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  let { data, isLoading, isFetching } = useGetProductsQuery({
+  let { data, isLoading, isFetching, isError } = useGetProductsQuery({
     limit,
     skip: page - 1,
   });
@@ -65,6 +65,7 @@ const Products = () => {
     tableHeaders,
     isLoading,
     isFetching,
+    isError,
     page,
     nextPage,
     limit,
