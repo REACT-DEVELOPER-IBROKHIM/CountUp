@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { Loading } from "@/utils";
 import { Fragment, useMemo } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import {
   usePinCustomerMutation,
   useUpdateCustomerMutation,
@@ -50,7 +50,6 @@ function TableComponent({
   isLoading,
   caption,
   isFetching,
-  page,
   nextPage,
   limit,
   handleLimit,
@@ -66,9 +65,11 @@ function TableComponent({
   const { data: profile } = useGetProfileQuery();
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams("");
+  const skip = +searchParams.get("skip") || 1 
   const today = profile?.innerData?.date.split("T")[0];
-
   let { pathname } = useLocation();
+  
   let userType = useMemo(() => pathname.split("/")[2], [pathname]);
   const total = useMemo(
     () => Math.ceil(data?.totalCount / limit) || 0,
@@ -210,6 +211,8 @@ function TableComponent({
           <TableCell colSpan={tableHeaders.length}>
             {pinCustomerLoading ||
             pinSellerLoading ||
+            updateCustomerLoading ||
+            updateSellerLoading ||
             (isFetching && !isLoading) ? (
               <div className="h-full w-full bg-[#ffffffa2] backdrop-blur-[3px] absolute top-0 left-0">
                 <div className="w-full min-h-[500px] flex items-center justify-center ">
@@ -226,7 +229,7 @@ function TableComponent({
             <div className="flex justify-end items-center gap-5">
               <Pagination
                 count={isError ? 1 : total}
-                page={page}
+                page={skip}
                 onChange={(_, value) => nextPage(value)}
               />
               <Select disabled={isError} onValueChange={(l) => handleLimit(l)}>

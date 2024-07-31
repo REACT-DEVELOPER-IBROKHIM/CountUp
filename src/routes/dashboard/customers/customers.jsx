@@ -1,4 +1,3 @@
-import { TableHead } from "@/components/ui/table";
 import { useGetCustomersQuery } from "@/redux/api/customers-api";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
@@ -6,68 +5,45 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { useGetSingleCustomerQuery } from "@/redux/api/customers-api";
 
 const Customers = () => {
-  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams("");
-  const [status, setStatus] = useState(searchParams.get("status") || "");
-
-  useEffect(() => {
-    let path = {};
-    if (!status) {
-      for (let i of searchParams.entries()) {
-        let [key, value] = i;
-        if (key !== "status") {
-          path[key] = value;
-        }
-      }
-      setSearchParams(path);
-    } else {
-      for (let i of searchParams.entries()) {
-        let [key, value] = i;
-        path[key] = value;
-      }
-      setSearchParams({ ...path, status });
-      setPage(1)
-      sessionStorage.setItem("customerPagination", 1);
-    }
-  }, [status]);
-
-  useEffect(()=>{
-    setStatus(searchParams.get("status") || "")
-  }, [searchParams])
+  const skip = +searchParams.get("skip") || 1 
+  const status = searchParams.get("status") 
 
   const { data, isLoading, isFetching, isError } = useGetCustomersQuery({
     limit,
-    skip: page - 1,
-    isArchive: status === "Archive",
-    isActive: status !== "Disactive",
+    skip: skip - 1,
+    isArchive: status === "archive",
+    isActive: status !== "inactive",
   });
+
   const nextPage = useCallback(
     (value) => {
-      setPage(value);
-      sessionStorage.setItem("customerPagination", value.toString());
+      const params = new URLSearchParams(searchParams);
+      if (+value === 1) {
+        params.delete("skip");
+      } else {
+        params.set("skip", value);
+      }
+      setSearchParams(params);
     },
-    [page]
+    [searchParams]
   );
 
   const handleLimit = useCallback(
     (value) => {
-      const latestPage = Math.ceil((limit * page) / value);
+      const params = new URLSearchParams(searchParams);
+      const latestPage = Math.ceil((limit * skip) / value);
+      params.set("skip", latestPage)
       setLimit(value);
-      setPage(latestPage);
       saveToLocalStorage("limit-customer", value);
-      sessionStorage.setItem("customerPagination", latestPage.toString());
+      setSearchParams(params)
     },
-    [limit, page]
+    [limit]
   );
 
   useEffect(() => {
-    let pagination = sessionStorage.getItem("customerPagination");
     let limit = localStorage.getItem("limit-customer");
-    if (pagination) {
-      setPage(parseInt(pagination));
-    }
-
     if (limit) {
       setLimit(parseInt(limit));
     }
@@ -75,7 +51,7 @@ const Customers = () => {
 
   useEffect(() => {
     scrollTo(0, 0);
-  }, [page, limit]);
+  }, [limit, skip]);
 
   const contextObject = {
     query: useGetSingleCustomerQuery,
@@ -83,12 +59,9 @@ const Customers = () => {
     tableHeaders: ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"],
     isLoading,
     isFetching,
-    page,
     nextPage,
     limit,
     handleLimit,
-    setStatus,
-    status,
     isError,
     userType: "customers",
   };

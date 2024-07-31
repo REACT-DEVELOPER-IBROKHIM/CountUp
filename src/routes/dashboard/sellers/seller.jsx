@@ -1,87 +1,61 @@
 import { useGetSellersQuery } from "@/redux/api/seller-api";
-import { TableHead } from "@/components/ui/table";
 import { useCallback, useEffect, useState } from "react";
 import { saveToLocalStorage } from "@/helpers";
 import {
   Outlet,
-  useNavigate,
-  useLocation,
   useSearchParams,
 } from "react-router-dom";
 import { useGetSingleSellerQuery } from "@/redux/api/seller-api";
 
 const Sellers = () => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams("");
-  const [status, setStatus] = useState(searchParams.get("status") || "");
+  const skip = +searchParams.get("skip") || 1 
+  const status = searchParams.get("status") 
 
-  useEffect(() => {
-    let path = {};
-    if (!status) {
-      for (let i of searchParams.entries()) {
-        let [key, value] = i;
-        if (key !== "status") {
-          path[key] = value;
-        }
-      }
-      setSearchParams(path);
-    } else {
-      for (let i of searchParams.entries()) {
-        let [key, value] = i;
-        path[key] = value;
-      }
-      setSearchParams({ ...path, status });
-      setPage(1);
-      sessionStorage.setItem("sellerPagination", 1);
-    }
-  }, [status]);
-
-  useEffect(() => {
-    setStatus(searchParams.get("status") || "");
-  }, [searchParams]);
 
   const { data, isLoading, isFetching, isError } = useGetSellersQuery({
     limit,
-    skip: page - 1,
-    isArchive: status === "Archive",
-    isActive: status !== "Disactive",
+    skip: skip - 1,
+    isArchive: status === "archive",
+    isActive: status !== "inactive",
   });
+
   const nextPage = useCallback(
     (value) => {
-      setPage(value);
-      sessionStorage.setItem("sellerPagination", value.toString());
+      const params = new URLSearchParams(searchParams);
+      if (value === 1) {
+        params.delete("skip");
+      } else {
+        params.set("skip", value);
+      }
+      setSearchParams(params);
     },
-    [page]
+    [searchParams]
   );
-  useEffect(() => {
-    let pagination = sessionStorage.getItem("sellerPagination");
-    let limit = localStorage.getItem("limit-seller");
-    if (pagination) {
-      setPage(parseInt(pagination));
-    }
 
+  const handleLimit = useCallback(
+    (value) => {
+      const params = new URLSearchParams(searchParams);
+      const latestPage = Math.ceil((limit * skip) / value);
+      params.set("skip", latestPage)
+      setLimit(value);
+      saveToLocalStorage("limit-seller", value);
+      setSearchParams(params)
+    },
+    [limit,searchParams]
+  );
+
+  useEffect(() => {
+    let limit = localStorage.getItem("limit-seller");
     if (limit) {
       setLimit(parseInt(limit));
     }
   }, []);
 
-  const handleLimit = useCallback(
-    (value) => {
-      const latestPage = Math.ceil((limit * page) / value);
-      setLimit(value);
-      setPage(latestPage);
-      saveToLocalStorage("limit-seller", value);
-      sessionStorage.setItem("sellerPagination", latestPage.toString());
-    },
-    [limit]
-  );
-
   useEffect(() => {
     scrollTo(0, 0);
-  }, [page, limit]);
+  }, [skip, limit]);
 
   const contextObject = {
     query: useGetSingleSellerQuery,
@@ -89,12 +63,9 @@ const Sellers = () => {
     tableHeaders: ["№", "FIO", "Telfon", "Budjet", "Boshqaruv"],
     isLoading,
     isFetching,
-    page,
     nextPage,
     limit,
     handleLimit,
-    setStatus,
-    status,
     isError,
     userType: "sellers",
   };
