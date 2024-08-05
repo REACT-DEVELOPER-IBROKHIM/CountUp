@@ -5,9 +5,9 @@ const Loading = () => {
   return  <div className="loader"></div>
 }
 
-const Suspense = ({ children }) => {
+const Suspense = ({ children, type }) => {
   return (
-    <React.Suspense fallback={<div className="h-screen "><Loading/></div>}>{children}
+    <React.Suspense fallback={<div className={!type ? "h-screen" : "h-full flex items-center"}><Loading/></div>}>{children}
     </React.Suspense>
   )
 }

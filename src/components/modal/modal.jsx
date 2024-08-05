@@ -9,8 +9,6 @@ import {
 
 const Modal = ({ title, description, children, open, setOpen, size}) => {
 
-  
-
   return (
     <Dialog open={open} onOpenChange={setOpen} >
       <DialogContent style={{ width: size }}>

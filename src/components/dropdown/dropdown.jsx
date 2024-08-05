@@ -12,6 +12,7 @@ const Dropdown = ({trigger, data, menuitems, menuactions}) => {
     <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button
+        className="w-[30px] h-[30px] p-0"
         aria-haspopup="true"
         size="icon"
         variant="ghost"
