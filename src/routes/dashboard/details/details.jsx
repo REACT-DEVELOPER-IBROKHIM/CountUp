@@ -4,12 +4,18 @@ import { CircleUserRound, Archive, CircleDollarSign } from "lucide-react";
 import { mappings } from "@/static/component-mappings";
 import { Button } from "@/components/ui/button";
 import "./details.css";
+import { useGetPaymentByIdQuery } from "@/redux/api/payment-api";
+import { useGetExpenseByIdQuery } from "@/redux/api/expense-api";
+
 
 const Details = () => {
     const {pathname} = useLocation();
     const { id } = useParams();
-    const { query } = useOutletContext();
+    const { query, userType } = useOutletContext();
     const { data: user, isLoading } = query({ id });
+    
+    const {data: customerTransaction, isLoading: customerTransactionLoading} = useGetPaymentByIdQuery({_id: id, params: {limit: 9}}, {skip: userType === "sellers"});
+    const {data: sellerTransaction, isLoading: sellerTransactionLoading} = useGetExpenseByIdQuery({_id: id, params: {limit: 9}}, {skip: userType === "customers"});
     
   return (
     <div className="flex h-full flex-col">
@@ -19,13 +25,14 @@ const Details = () => {
           <Loading />
         </div>
       ) : (
-        <div className="w-full flex-1 grid grid-rows-3 grid-flow-col gap-4">
-          <div className="row-span-3 col-span-1 shadow-3xl rounded-lg p-5 min-w-[200px]">
+        <div className="w-full flex-1 flex gap-4">
+          <div className="shadow-3xl rounded-lg p-5 max-w-[300px] w-full">
             {
                 mappings.profile({pathname})       
             }
           </div>
-          <div className="max-h-[270px] col-span-3 shadow-3xl flex items-center px-10 rounded-lg gap-4">
+          <div className="flex flex-col gap-4 w-full">
+          <div className="shadow-3xl flex items-center px-10 py-5 rounded-lg gap-4">
             <CircleUserRound size={100} className="text-gray-700" />
             <div className="flex flex-1 justify-between items-center">
               {user && (
@@ -74,8 +81,9 @@ const Details = () => {
               }
             </div>
           </div>
-          <div className="min-h-[400px] row-span-2 col-span-3 shadow-3xl rounded-lg w-full p-5">
-            <Outlet context={ {_id: user.innerData._id} } />
+          <div className="shadow-3xl rounded-lg p-5 h-full">
+            <Outlet context={ userType === "sellers" ? {data: sellerTransaction, isLoading: sellerTransactionLoading} : {data: customerTransaction, isLoading: customerTransactionLoading}} />
+          </div>
           </div>
         </div>
       )}

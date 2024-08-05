@@ -57,10 +57,34 @@ const Sellers = () => {
     scrollTo(0, 0);
   }, [skip, limit]);
 
+  const tableHeaders = [
+    {
+      title: "№",
+      dataIndex: "id",  
+    },
+    {
+      title: "FIO",
+      dataIndex: "fname",
+    },
+    {
+      title: "Telfon",
+      dataIndex: "phone_primary",
+    },
+    {
+      title: "Budjet",
+      dataIndex: "budget",
+    },
+    {
+      title: "Boshqaruv",
+      dataIndex: "isArchive",
+    },
+  ];
+
   const contextObject = {
     query: useGetSingleSellerQuery,
     data,
-    tableHeaders: ["№", "FIO", "Telfon", "Budjet", "Boshqaruv"],
+    tableHeaders,
+    sortingOptions: ["fname", "budget"],
     isLoading,
     isFetching,
     nextPage,

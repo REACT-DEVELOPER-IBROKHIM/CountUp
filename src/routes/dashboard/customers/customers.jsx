@@ -7,8 +7,8 @@ import { useGetSingleCustomerQuery } from "@/redux/api/customers-api";
 const Customers = () => {
   const [limit, setLimit] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams("");
-  const skip = +searchParams.get("skip") || 1 
-  const status = searchParams.get("status") 
+  const skip = +searchParams.get("skip") || 1;
+  const status = searchParams.get("status");
 
   const { data, isLoading, isFetching, isError } = useGetCustomersQuery({
     limit,
@@ -34,10 +34,10 @@ const Customers = () => {
     (value) => {
       const params = new URLSearchParams(searchParams);
       const latestPage = Math.ceil((limit * skip) / value);
-      params.set("skip", latestPage)
+      params.set("skip", latestPage);
       setLimit(value);
       saveToLocalStorage("limit-customer", value);
-      setSearchParams(params)
+      setSearchParams(params);
     },
     [limit]
   );
@@ -53,10 +53,34 @@ const Customers = () => {
     scrollTo(0, 0);
   }, [limit, skip]);
 
+  const tableHeaders = [
+    {
+      title: "№",
+      dataIndex: "id",  
+    },
+    {
+      title: "FIO",
+      dataIndex: "fname",
+    },
+    {
+      title: "Telfon",
+      dataIndex: "phone_primary",
+    },
+    {
+      title: "Budjet",
+      dataIndex: "budget",
+    },
+    {
+      title: "Boshqaruv",
+      dataIndex: "isArchive",
+    },
+  ];
+
   const contextObject = {
     query: useGetSingleCustomerQuery,
     data,
-    tableHeaders: ["№", "FIO", "Telefon", "Budjet", "Boshqaruv"],
+    tableHeaders,
+    sortingOptions: ["fname", "budget"],
     isLoading,
     isFetching,
     nextPage,

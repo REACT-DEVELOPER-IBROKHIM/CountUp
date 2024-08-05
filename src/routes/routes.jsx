@@ -17,7 +17,7 @@ const Profile = lazy(() => import("@/routes/dashboard/profile/profile"));
 const Help = lazy(() => import("@/routes/dashboard/help/help"));
 const Details = lazy(() => import("@/routes/dashboard/details/details"));
 const TableView = lazy(() =>import("@/routes/dashboard/table-view/table-view"));
-const DetailsPayment = lazy(() => import("@/routes/dashboard/details/payment-history/payment-history"));
+const DetailsPayment = lazy(() => import("@/routes/dashboard/details/transaction-history/transaction-history"));
 const DetailsProfile = lazy(() => import("@/routes/dashboard/details/profile/profile"));
 const DetailsProducts = lazy(() => import("@/routes/dashboard/details/products/products"));
 
@@ -32,17 +32,17 @@ const RouteController = () => {
         <Route path="customers" element={<Suspense><Customers /></Suspense>}>
             <Route path="" element={<Suspense><TableView /></Suspense>} />
             <Route path="details/:id" element={<Suspense><Details userType="customers" /></Suspense>}>
-                <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
-                <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
-                <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
+                <Route path="d-products" element={<Suspense type="subroute"><DetailsProducts /></Suspense>} />
+                <Route path="d-payments-history" element={<Suspense type="subroute"><DetailsPayment /></Suspense>} />
+                <Route path="d-profile" element={<Suspense type="subroute"><DetailsProfile /></Suspense>} />
             </Route>
         </Route>
         <Route path="sellers" element={<Suspense><Sellers /></Suspense>}>
             <Route path="" element={<Suspense><TableView /></Suspense>} />
             <Route path="details/:id" element={<Suspense><Details userType="sellers" /></Suspense>}>
-                <Route path="d-products" element={<Suspense><DetailsProducts /></Suspense>} />
-                <Route path="d-payments-history" element={<Suspense><DetailsPayment /></Suspense>} />
-                <Route path="d-profile" element={<Suspense><DetailsProfile /></Suspense>} />
+                <Route path="d-products" element={<Suspense type="subroute"><DetailsProducts /></Suspense>} />
+                <Route path="d-payments-history" element={<Suspense type="subroute"><DetailsPayment /></Suspense>} />
+                <Route path="d-profile" element={<Suspense type="subroute"><DetailsProfile /></Suspense>} />
             </Route>
         </Route>
         <Route path="products" element={<Suspense><Products /></Suspense>} />

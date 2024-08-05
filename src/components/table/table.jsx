@@ -23,6 +23,7 @@ import {
   PhoneOutgoing,
   Pin,
   CircleDollarSign,
+  ListFilter,
 } from "lucide-react";
 import { Loading } from "@/utils";
 import { Fragment, useMemo } from "react";
@@ -44,9 +45,11 @@ import { createPortal } from "react-dom";
 import Dropdown from "../dropdown/dropdown";
 import Empty from "../empty/empty";
 
+
 function TableComponent({
   data,
   tableHeaders,
+  sortingOptions,
   isLoading,
   caption,
   isFetching,
@@ -100,16 +103,19 @@ function TableComponent({
   };
 
   return (
-    <Table className="w-full shadow">
+    <Table className="w-full shadow h-full">
       <TableCaption>{caption}</TableCaption>
       <TableHeader>
         <TableRow>{tableHeaders.map(
         (header, index, arr) => (
-          <TableHead
-            className={arr.length - 1 === index ? "text-right" : ""}
-            key={index}
+          <TableHead key={index}
           >
-          {header}
+         <div className={`flex items-center gap-3 ${arr.length - 1 === index ? "justify-end" : "justify-start"}`} >
+         {header.title}
+          {
+            sortingOptions.includes(header.dataIndex) && <Dropdown  menuitems={ header.dataIndex === "fname" ? ["A-Z", "Z-A"] : ["Eng ko'p", "Eng kam"]} trigger={<ListFilter />} />
+          }
+         </div>
         </TableHead>
       )
     )}</TableRow>
@@ -198,6 +204,7 @@ function TableComponent({
             <Modal
               open={open}
               setOpen={setOpen}
+              size={"600px"}
               title={`${
                 userType === "sellers" ? "Sotuvchi" : "Mijoz"
               } uchun to'lov`}

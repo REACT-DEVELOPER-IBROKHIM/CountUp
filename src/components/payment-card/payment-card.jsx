@@ -2,14 +2,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import Dropdown from "../dropdown/dropdown";
 import { EllipsisIcon } from "lucide-react";
 
-const PaymentCard = ({ payment, dateOpen, setDateOpen }) => {
+const TransactionCard = ({ payment, dateOpen, setDateOpen }) => {
   return (
     <Card>
-      <CardContent className="pt-4 pb-2 flex justify-between items-center gap-3">
+      <CardContent className="pt-4 pb-2 flex justify-between gap-3">
         <div>
-          <div className="text-2xl font-bold">{payment.amount.fprice()}</div>
-          <p className="text-s text-muted-foreground">
-            {payment.adminId.fname + " " + payment.adminId.lname}
+          <div className="text-xl font-bold">{payment.amount.fprice()}</div>
+          <p className="text-xs text-muted-foreground">
+            {payment.adminId?.fname + " " + payment.adminId?.lname}
           </p>
          {payment.comment.trim() && <p className="text-xs text-slate-700 mt-2">{payment.comment}</p>}
         </div>
@@ -28,7 +28,7 @@ const PaymentCard = ({ payment, dateOpen, setDateOpen }) => {
           </div>
           <p
             className={`absolute w-full text-right z-[1] ${
-              dateOpen ? "top-[40px] opacity-100" : "top-[50px] opacity-0"
+              dateOpen ? "top-[30px] opacity-100" : "top-[50px] opacity-0"
             } transition-all`}
           >
             {payment.createdAt.formatDate().time}
@@ -39,4 +39,4 @@ const PaymentCard = ({ payment, dateOpen, setDateOpen }) => {
   );
 };
 
-export default PaymentCard;
+export default TransactionCard;
