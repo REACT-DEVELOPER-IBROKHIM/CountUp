@@ -1,14 +1,9 @@
 import { saveToLocalStorage } from "@/helpers";
 import { useGetProductsQuery, useGetSingleProductQuery } from "@/redux/api/products-api";
-import { SectionTypography as ContentTitle } from "@/utils";
-import { TableHead } from "@/components/ui/table";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import ProductTable from "@/components/product-table/product-table";
 
 const Products = () => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   let { data, isLoading, isFetching, isError } = useGetProductsQuery({
