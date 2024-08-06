@@ -33,7 +33,7 @@ const userFormSchema = z.object({
   budget: z.number().optional(),
 });
 
-const CreateUser = ({ userType, setOpen }) => {
+const CreateUser = ({ userType, setOpen,back }) => {
   const [createCustomer, {isLoading: customerLoading, isSuccess: customerSuccess}] = useCreateCustomerMutation()
   const [createSeller, {isLoading: sellerLoading, isSuccess: sellerSuccess}] = useCreateSellerMutation()
   const { toast } = useToast();
@@ -73,7 +73,11 @@ const CreateUser = ({ userType, setOpen }) => {
     },
     [customerSuccess, sellerSuccess]
   );
-
+  useEffect(()=>{
+    return ()=>{
+      setOpen(false)
+    }
+  }, [])
   return (
     <Form {...userForm}>
       <form className="" onSubmit={handleCreateUser}>
@@ -171,6 +175,12 @@ const CreateUser = ({ userType, setOpen }) => {
             } 
           Ro'yhatga olish 
         </Button>
+        {
+          back && 
+          <Button className="mt-3" onClick={()=> setOpen(false)}>
+            Orqaga
+          </Button>
+        }
       </form>
     </Form>
   );

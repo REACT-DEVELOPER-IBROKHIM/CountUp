@@ -26,9 +26,14 @@ import { Fragment, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { useState } from "react";
+import Modal from "../modal/modal";
+import { createPortal } from "react-dom";
+import CreateProduct from "../create-product/create-product";
+import CreateUser from "../create-user/create-user";
 
 const ProductTable = (props) => {
   const [open, setOpen] = useState(false);
+  const [isSeller, setIsSeller] = useState(false)
   const {
     data,
     page,
@@ -56,48 +61,66 @@ const ProductTable = (props) => {
     }
     setSearchParams({ ...paramsObject, ...params });
   };
-  
-  const removeQuary = (params)=>{
+
+  const removeQuary = (params) => {
     let paramsObject = {};
     for (let i of searchParams.entries()) {
       let [key, value] = i;
-      if(params !== key){
+      if (params !== key) {
         paramsObject[key] = value;
       }
     }
     setSearchParams({ ...paramsObject });
-  }
+  };
   return (
     <>
       <div className="flex gap-5">
         <button onClick={() => addQuary({ archive: true })}>Mavjud</button>
-        <button onClick={() => addQuary({ archive: false })}>Mavjud emas</button>
+        <button onClick={() => addQuary({ archive: false })}>
+          Mavjud emas
+        </button>
         <button onClick={() => removeQuary("archive")}>Mavjud emas</button>
       </div>
       <ContentTitle>
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             Mahsulotlar
-            {!isFetching && !isError  &&  <Badge>{data?.totalCount}</Badge>}
+            {!isFetching && !isError && <Badge>{data?.totalCount}</Badge>}
           </div>
           <Button onClick={() => setOpen(true)} className="flex gap-1">
             <Plus size={18} />
             <span className="">Qo'shish</span>
           </Button>
+          {open &&
+            createPortal(
+              <Modal
+                open={open}
+                setOpen={setOpen}
+                title={ "Yangi mahsulot qo'shish"}
+                description={``}
+                size="1000px"
+              >
+                <div className="max-h-[60vh] overflow-auto">
+                  {
+                    isSeller ?
+                    <CreateUser back={true} setOpen={setIsSeller} userType={"sellers"} />
+                    :
+                    <CreateProduct setIsSeller={setIsSeller}/>
+                  }
+                </div>
+              </Modal>,
+              document.getElementById("modal-controller")
+            )}
         </div>
       </ContentTitle>
       <Table className="w-full shadow">
         <TableCaption>Mahsulotlar</TableCaption>
         <TableHeader>
-          <TableRow>{tableHeaders.map(
-          (header, index, arr) => (
-            <TableHead
-              key={index}
-            >
-          {header}
-        </TableHead>
-      )
-    )}</TableRow>
+          <TableRow>
+            {tableHeaders.map((header, index, arr) => (
+              <TableHead key={index}>{header}</TableHead>
+            ))}
+          </TableRow>
         </TableHeader>
         <TableBody className="relative">
           {isLoading ? (
